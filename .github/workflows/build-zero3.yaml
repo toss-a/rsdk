@@ -1,0 +1,33 @@
+name: Build Radxa Zero 3 CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'Distro suite'
+        required: true
+        default: 'bookworm'
+        type: string
+      test-repo:
+        description: 'Use Radxa testing APT repository'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Build Radxa Zero 3 CLI
+        uses: ./.github/actions/build
+        with:
+          product: radxa-zero3
+          suite: ${{ inputs.suite }}
+          edition: cli
+          artifacts: true
+          test-repo: ${{ inputs.test-repo }}
